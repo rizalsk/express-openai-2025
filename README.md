@@ -1,4 +1,4 @@
-# Express Node.js App with TailwindCSS & OpenAI
+# Express Node.js App with TailwindCSS & OpenAI Integration
 
 ## Overview
 This is a Node.js application using **Express** framework with **TailwindCSS** for styling and integrated with **OpenAI API**. The project includes a development setup with live CSS watching and server restart.
