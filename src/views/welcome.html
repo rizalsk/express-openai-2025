@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="/css/main.css" rel="stylesheet">
+    <title>
+      TailAdmin - Tailwind CSS Admin Dashboard Template
+    </title>
+    <style>
+        /* Animasi glow untuk teks dan tombol */
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            }
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+            }
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            }
+        }
+
+        .glowing-text {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        .glowing-button {
+            animation: glow 2s ease-in-out infinite;
+        }
+    </style>
+  </head>
+  <body class="bg-black font-sans">
+
+    <div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-900 via-purple-900 to-blue-900">
+        <div class="text-center text-white p-8 rounded-3xl shadow-2xl bg-opacity-60 backdrop-blur-lg border-4 border-indigo-500">
+            <h1 class="text-5xl font-extrabold mb-4 glowing-text">Welcome to AI Admin Website!</h1>
+            <p class="text-lg mb-6">Di sini, teknologi dan inovasi bertemu untuk memberikan pengalaman terbaik.</p>
+            <a href="#" class="bg-gradient-to-r from-cyan-400 to-blue-600 text-white py-3 px-8 rounded-full text-xl hover:scale-110 transform transition glowing-button">
+              Start
+            </a>
+        </div>
+    </div>
+
+  </body>
+</html>

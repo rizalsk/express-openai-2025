@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <link rel="shortcut icon" id="favicon" href="/images/favicon.svg">
+  <!-- TailAdmin / Tailwind CSS -->
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+  <div class="flex h-screen">
+      <!-- Overlay -->
+      <div
+        id="overlay"
+        onclick="toggleSidebar()"
+        class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"
+      ></div>
+      
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="
+          fixed inset-y-0 left-0 z-40
+          w-64 bg-gray-800 text-white
+          p-5
+          transform -translate-x-full
+          transition-transform duration-300
+          overflow-y-auto h-screen
+          lg:static lg:translate-x-0 lg:h-auto
+        "
+      >
+        <div class="flex items-center space-x-2 mb-10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" viewBox="0 0 20 20"
+            fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M3.172 5.172a4 4 0 015.656 0L10 6.828l1.172-1.172a4 4 0 115.656 5.656l-6 6a4 4 0 01-5.656 0l-6-6a4 4 0 010-5.656z"
+              clip-rule="evenodd" />
+          </svg>
+          <span class="text-2xl font-bold">Admin Dashboard</span>
+          <button onclick="toggleSidebar()" class="lg:hidden p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+        <ul class="space-y-2">
+          <!-- Dashboard -->
+          <li>
+            <a href="#" class="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded">
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <!-- Users Dropdown -->
+          <li class="relative">
+            <button onclick="toggleSideDropdown('usersDropdown')"
+              class="w-full flex justify-between items-center hover:bg-gray-700 p-2 rounded">
+              <span>Users</span>
+              <svg class="w-4 h-4 transform transition-transform duration-200" id="usersDropdownIcon"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <ul id="usersDropdown" class="hidden mt-1 space-y-1 pl-4">
+              <li>
+                <a href="#" class="block p-2 text-gray-300 hover:bg-gray-700 rounded">All Users</a>
+              </li>
+              <li>
+                <a href="#" class="block p-2 text-gray-300 hover:bg-gray-700 rounded">Add User</a>
+              </li>
+              <li>
+                <a href="#" class="block p-2 text-gray-300 hover:bg-gray-700 rounded">Roles</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Settings -->
+          <li>
+            <a href="#" class="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded">
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1">
+
+        <!-- Header -->
+        <header class="mb-6 bg-white rounded-lg shadow-sm sticky top-0 z-20">
+          <div class="flex items-center justify-between p-4">
+
+            <!-- Left (Mobile: Hamburger + Title) -->
+            <div class="flex items-center gap-3">
+              <!-- Hamburger -->
+              <button
+                onclick="toggleSidebar()"
+                class="lg:hidden p-2 rounded-md hover:bg-gray-100"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+
+              <!-- Title -->
+              <h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
+                Dashboard
+              </h1>
+            </div>
+
+            <!-- Right -->
+            <div class="flex items-center gap-4">
+
+              <!-- Mobile Action Button -->
+              <button class="lg:hidden bg-blue-500 text-white px-3 py-2 rounded-md text-sm">
+                Add
+              </button>
+
+              <!-- Desktop Profile with Dropdown -->
+              <div class="relative hidden lg:flex items-center gap-3">
+                <button id="profileBtn" onclick="toggleDropdown()" class="flex items-center gap-2 focus:outline-none">
+                  <img
+                    src="https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Profile"
+                    class="w-10 h-10 rounded-full"
+                  />
+                  <span class="font-medium text-gray-700">Admin User</span>
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="hidden absolute top-[40px] right-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden z-50">
+                  <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                  <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+                  <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </header>
+
+        <main class="p-4">
+          <!-- Dashboard Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h2 class="text-xl font-semibold">Total Users</h2>
+              <p class="text-3xl font-bold text-blue-600">1,230</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h2 class="text-xl font-semibold">Active Sessions</h2>
+              <p class="text-3xl font-bold text-green-600">124</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h2 class="text-xl font-semibold">Revenue</h2>
+              <p class="text-3xl font-bold text-yellow-600">$12,450</p>
+            </div>
+          </div>
+
+          <!-- Latest Activity -->
+          <div class="mt-10">
+            <h2 class="text-2xl font-semibold mb-4">Latest Activity</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <ul>
+                <li class="border-b border-gray-200 py-2">User John Doe logged in</li>
+                <li class="border-b border-gray-200 py-2">Admin Jane updated settings</li>
+                <li class="border-b border-gray-200 py-2">New user Sarah registered</li>
+              </ul>
+            </div>
+          </div>
+        </main>
+
+      </div>
+  </div>
+
+  
+  <script>
+    // Toggle sidebar (mobile)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    // Toggle dropdown menu sidebar
+    function toggleSideDropdown(id) {
+      const dropdown = document.getElementById(id);
+      const icon = document.getElementById(id + 'Icon');
+      dropdown.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180'); // panah berputar
+    }
+
+    // Toggle dropdown menu (desktop)
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdown jika klik di luar
+    window.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('dropdownMenu');
+      const btn = document.getElementById('profileBtn');
+      if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+    
+  </script>
+  
+</body>
+
+</html>

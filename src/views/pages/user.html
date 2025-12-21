@@ -1,0 +1,153 @@
+<div class="bg-gray-100 min-h-[90vh] flex flex-col items-center p-6">
+
+  <div class="w-full max-w-6xl bg-white shadow-md rounded-lg overflow-hidden">
+
+    <!-- Table Header -->
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+      <h2 class="text-xl font-semibold">User List</h2>
+<!-- Tombol Add User -->
+      <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+      Add User
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left text-sm font-light">
+        <thead class="border-b font-medium bg-gray-50">
+          <tr>
+            <th class="px-6 py-3">#</th>
+            <th class="px-6 py-3">Name</th>
+            <th class="px-6 py-3">Email</th>
+            <th class="px-6 py-3">Role</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+          <!-- Example row -->
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">1</td>
+            <td class="px-6 py-4">John Doe</td>
+            <td class="px-6 py-4">john@example.com</td>
+            <td class="px-6 py-4">Admin</td>
+            <td class="px-6 py-4">
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Active</span>
+            </td>
+            <td class="px-6 py-4 space-x-2">
+              <button class="text-blue-500 hover:underline">Edit</button>
+              <button class="text-red-500 hover:underline">Delete</button>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">2</td>
+            <td class="px-6 py-4">Jane Smith</td>
+            <td class="px-6 py-4">jane@example.com</td>
+            <td class="px-6 py-4">User</td>
+            <td class="px-6 py-4">
+              <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">Inactive</span>
+            </td>
+            <td class="px-6 py-4 space-x-2">
+              <button class="text-blue-500 hover:underline">Edit</button>
+              <button class="text-red-500 hover:underline">Delete</button>
+            </td>
+          </tr>
+          <!-- Tambahkan lebih banyak user sesuai kebutuhan -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-between items-center p-4 border-t border-gray-200">
+      <span class="text-sm text-gray-600">Showing 1 to 10 of 50 users</span>
+      <div class="inline-flex items-center space-x-1">
+        <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</button>
+        <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">1</button>
+        <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">2</button>
+        <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">3</button>
+        <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</button>
+      </div>
+    </div>
+
+  </div>
+
+  
+</div>
+
+<!-- Modal -->
+<div id="addUserModal" class="fixed inset-0 bg-black/50 hidden z-50 flex justify-center items-center">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Add New User</h2>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+    </div>
+
+    <!-- Form -->
+    <form id="addUserForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text"
+          class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="Enter name" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email"
+          class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="Enter email" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password"
+          class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="Enter password" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Role</label>
+        <select
+          class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Status</label>
+        <select
+          class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="flex justify-end space-x-2">
+        <button type="button" onclick="closeModal()"
+          class="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit"
+          class="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('addUserModal').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('addUserModal').classList.add('hidden');
+  }
+
+  window.addEventListener('click', function (e) {
+    const modal = document.getElementById('addUserModal');
+    if (e.target === modal) closeModal();
+  });
+
+  document.getElementById('addUserForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('User added!');
+    closeModal();
+  });
+</script>

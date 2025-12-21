@@ -1,0 +1,102 @@
+<div class="bg-gray-100 min-h-[90vh] flex justify-center items-start p-6">
+
+  <div class="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
+
+    <!-- Header -->
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-semibold">Text Extractor</h1>
+      <div class="flex gap-2">
+        <button id="extractBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Extract</button>
+        <button id="copyBtn" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Copy Result</button>
+      </div>
+    </div>
+
+    <!-- Upload / Input Area -->
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Upload File (PDF/Image) or Paste Text</label>
+      <input type="file" id="fileInput"
+        class="w-full border border-gray-300 rounded-md px-3 py-2 mb-3 focus:outline-none focus:ring focus:border-blue-300">
+      <textarea id="textInput" rows="6" placeholder="Or paste text here..."
+        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:border-blue-300 resize-none"></textarea>
+    </div>
+
+    <!-- Prompt Input -->
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Prompt / Instruction (Optional)</label>
+      <input type="text" id="promptInput" placeholder="E.g. Summarize, Extract keywords..."
+        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:border-blue-300">
+    </div>
+
+    <!-- Extracted Text Preview -->
+    <div>
+      <label class="block text-gray-700 font-medium mb-2">Extracted Text</label>
+      <div id="output"
+        class="w-full h-64 border border-gray-300 rounded-md p-3 overflow-y-auto bg-gray-50 text-gray-800">Nothing
+        extracted yet...</div>
+    </div>
+
+  </div>
+
+  <script>
+    const extractBtn = document.getElementById('extractBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const textInput = document.getElementById('textInput');
+    const promptInput = document.getElementById('promptInput');
+    const output = document.getElementById('output');
+    const fileInput = document.getElementById('fileInput');
+
+    extractBtn.addEventListener('click', async () => {
+      let extractedText = textInput.value.trim();
+      const prompt = promptInput.value.trim();
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = async function (e) {
+          const arrayBuffer = e.target.result;
+
+          if (file.type.startsWith('image/')) {
+            output.textContent = 'Extracting text from image...';
+            const result = await Tesseract.recognize(arrayBuffer, 'eng', { logger: m => console.log(m) });
+            extractedText = result.data.text;
+            if (prompt) {
+              extractedText = `Prompt: ${prompt}\n\n${extractedText}`;
+            }
+            output.textContent = extractedText || 'No text found in image.';
+          } else if (file.type === 'application/pdf') {
+            output.textContent = 'PDF extraction is not implemented in this demo.';
+          } else {
+            extractedText = e.target.result;
+            if (prompt) {
+              extractedText = `Prompt: ${prompt}\n\n${extractedText}`;
+            }
+            output.textContent = extractedText || 'No text found in file.';
+          }
+        };
+
+        if (file.type.startsWith('image/')) {
+          reader.readAsDataURL(file);
+        } else {
+          reader.readAsText(file);
+        }
+
+      } else {
+        if (prompt) {
+          extractedText = `Prompt: ${prompt}\n\n${extractedText}`;
+        }
+        output.textContent = extractedText || 'No text entered.';
+      }
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = output.textContent;
+      if (!text || text === 'Nothing extracted yet...') return;
+
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Text copied to clipboard!'))
+        .catch(() => alert('Failed to copy text.'));
+    });
+  </script>
+
+</div>

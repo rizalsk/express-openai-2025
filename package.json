@@ -1,0 +1,43 @@
+{
+  "name": "openai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css:watch": "npx @tailwindcss/cli -i ./src/assets/css/style.css -o ./public/css/main.css --watch",
+    "dev": "concurrently \"nodemon server.js\" \"npm run css:watch\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/forms": "^0.5.11",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "css-loader": "^7.1.2",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "file-loader": "^6.2.0",
+    "openai": "^6.15.0",
+    "postcss-cli": "^8.3.1",
+    "postcss-loader": "^8.2.0",
+    "postcss-preset-env": "^9.6.0",
+    "socket.io": "^4.8.1",
+    "style-loader": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.1.18"
+  }
+}

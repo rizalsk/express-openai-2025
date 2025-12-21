@@ -1,0 +1,72 @@
+<div class="bg-gray-100 min-h-[90vh] flex justify-center items-start p-6">
+
+  <div class="w-full max-w-4xl bg-white shadow-md rounded-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-blue-500 p-6 flex justify-between items-center">
+      <h1 class="text-2xl font-semibold text-white">Settings</h1>
+      <button
+        class="bg-white text-blue-500 font-semibold px-4 py-2 rounded-md shadow hover:bg-gray-100">Save All</button>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 space-y-8">
+
+      <!-- Account Settings -->
+      <div>
+        <h2 class="text-lg font-semibold mb-4">Account Settings</h2>
+        <form class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Full Name</label>
+            <input type="text" placeholder="John Doe"
+              class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" placeholder="john@example.com"
+              class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" placeholder="••••••••"
+              class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input type="password" placeholder="••••••••"
+              class="w-full border px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          </div>
+        </form>
+      </div>
+
+      <!-- Preferences -->
+      <div>
+        <h2 class="text-lg font-semibold mb-4">Preferences</h2>
+        <form class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Email Notifications</span>
+            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-400">
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">SMS Notifications</span>
+            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-400">
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Dark Mode</span>
+            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-blue-500 focus:ring-blue-400">
+          </div>
+        </form>
+      </div>
+
+      <!-- Danger Zone -->
+      <div>
+        <h2 class="text-lg font-semibold mb-4 text-red-600">Danger Zone</h2>
+        <button
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 shadow">Delete Account</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
