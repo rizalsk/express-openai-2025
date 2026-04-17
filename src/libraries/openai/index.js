@@ -1,2 +1,1 @@
-
-const config = ""
+export { generateAIResponse } from '../ai/index.js';

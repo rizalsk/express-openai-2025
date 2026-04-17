@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.route.js';
 import dashboardRoutes from './routes/dashboard.route.js';
+import aiRoutes from './routes/ai.route.js';
 import path from 'path';
 import fs from 'fs';
 import { calenderPage } from './controllers/dashboard.controller.js';
@@ -12,11 +13,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Public folder
 app.use(express.static(path.join(process.cwd(), 'public')));
-
-app.use(bodyParser.json());
 
 app.set('views', path.join(process.cwd(), 'src', 'views'));
 app.engine('html', (filePath, options, callback) => {
@@ -30,16 +30,9 @@ app.set('view engine', 'html');
 // Routes
 app.use('/auth', authRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/api/ai', aiRoutes);
 
-app.get('/', (req,res)=>res.redirect('/auth/login'));
-
-/* app.get('/', (req, res) => {
-  const contentFile = path.join(process.cwd(), 'src', 'views', 'welcome.html');
-
-  let contentHtml = fs.readFileSync(contentFile, 'utf-8');
-  const processedContent = processNestedHtml(contentHtml);
-  console.log("render", processedContent)
-  res.send(processedContent);
-}); */
+app.get('/', (req, res) => res.redirect('/auth/login'));
 app.get('/calendar', calenderPage);
+
 export default app;

@@ -1,49 +1,51 @@
 <div class="h-[90vh] flex bg-gray-100">
-
-  <!-- Sidebar (opsional) -->
   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col hidden lg:flex">
     <div class="p-4 border-b border-gray-200">
       <h1 class="text-xl font-semibold">Chat History</h1>
     </div>
-    <ul class="flex-1 overflow-y-auto p-2 space-y-2">
+    <ul class="flex-1 overflow-y-auto p-2 space-y-2" id="historyList">
       <li class="p-3 hover:bg-gray-100 cursor-pointer rounded">Hello chatbot</li>
       <li class="p-3 hover:bg-gray-100 cursor-pointer rounded">Generate image of a cat</li>
       <li class="p-3 hover:bg-gray-100 cursor-pointer rounded">Ask about weather</li>
     </ul>
   </aside>
 
-  <!-- Chat Area -->
   <div class="flex-1 flex flex-col">
-    <!-- Chat Header -->
     <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
-      <h1 class="text-xl font-semibold">Chatbot</h1>
-      <button class="text-gray-500 hover:text-gray-700">Options</button>
+      <div>
+        <h1 class="text-xl font-semibold">Chatbot</h1>
+        <p class="text-sm text-gray-500">OpenAI / Gemini integration</p>
+      </div>
+      <button
+        id="clearChatBtn"
+        class="text-sm px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+      >
+        Clear Chat
+      </button>
     </div>
 
-    <!-- Chat Messages -->
     <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50" id="chatArea">
-      <!-- Incoming message -->
       <div class="flex items-start gap-3">
-        <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs break-words">
+        <div class="bg-white p-3 rounded-lg shadow-sm max-w-2xl break-words">
           Hello! How can I assist you today?
-          <span class="text-xs text-gray-400 block mt-1">10:00 AM</span>
-        </div>
-      </div>
-
-      <!-- Outgoing message -->
-      <div class="flex justify-end">
-        <div class="bg-blue-500 text-white p-3 rounded-lg shadow-sm max-w-xs break-words">
-          Can you generate an image of a futuristic city?
-          <span class="text-xs text-gray-200 block text-right mt-1">10:01 AM</span>
+          <span class="text-xs text-gray-400 block mt-1">Now</span>
         </div>
       </div>
     </div>
 
-    <!-- Chat Input -->
-    <div class="p-4 border-t border-gray-200 bg-white flex items-center gap-3">
-      <input type="text" id="userInput" placeholder="Type a message..."
-        class="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring focus:border-blue-300" />
-      <button id="sendBtn" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">Send</button>
+    <div class="p-4 border-t border-gray-200 bg-white flex items-end gap-3">
+      <textarea
+        id="userInput"
+        rows="2"
+        placeholder="Type a message..."
+        class="flex-1 px-4 py-3 border rounded-2xl focus:outline-none focus:ring focus:border-blue-300 resize-none"
+      ></textarea>
+      <button
+        id="sendBtn"
+        class="bg-blue-500 text-white px-5 py-3 rounded-2xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Send
+      </button>
     </div>
   </div>
 
@@ -51,36 +53,137 @@
     const chatArea = document.getElementById('chatArea');
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
+    const clearChatBtn = document.getElementById('clearChatBtn');
 
-    sendBtn.addEventListener('click', () => {
-      const message = userInput.value.trim();
-      if (!message) return;
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
 
-      // Tambahkan pesan user
-      const userMsg = document.createElement('div');
-      userMsg.className = 'flex justify-end';
-      userMsg.innerHTML = `
-        <div class="bg-blue-500 text-white p-3 rounded-lg shadow-sm max-w-xs break-words">
-          ${message}
+    function nl2br(str) {
+      return String(str).replace(/\n/g, '<br>');
+    }
+
+    function scrollToBottom() {
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function appendUserMessage(message) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex justify-end';
+
+      wrapper.innerHTML = `
+        <div class="bg-blue-500 text-white p-3 rounded-lg shadow-sm max-w-2xl break-words">
+          ${nl2br(escapeHtml(message))}
           <span class="text-xs text-gray-200 block text-right mt-1">Now</span>
         </div>
       `;
-      chatArea.appendChild(userMsg);
 
-      // Tambahkan "chatbot reply" placeholder
-      const botMsg = document.createElement('div');
-      botMsg.className = 'flex items-start gap-3';
-      botMsg.innerHTML = `
-        <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs break-words">
-          This is a response from the chatbot.
+      chatArea.appendChild(wrapper);
+      scrollToBottom();
+    }
+
+    function appendBotLoading() {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-start gap-3';
+      wrapper.innerHTML = `
+        <div class="bg-white p-3 rounded-lg shadow-sm max-w-2xl break-words">
+          Thinking...
           <span class="text-xs text-gray-400 block mt-1">Now</span>
         </div>
       `;
-      chatArea.appendChild(botMsg);
 
-      chatArea.scrollTop = chatArea.scrollHeight;
+      chatArea.appendChild(wrapper);
+      scrollToBottom();
+
+      return wrapper.querySelector('div');
+    }
+
+    function setBotResponse(targetEl, text, provider, model) {
+      targetEl.innerHTML = `
+        <div>${nl2br(escapeHtml(text))}</div>
+        <span class="text-xs text-gray-400 block mt-2">${escapeHtml(provider)} • ${escapeHtml(model)}</span>
+      `;
+      scrollToBottom();
+    }
+
+    function setBotError(targetEl, message) {
+      targetEl.innerHTML = `
+        <div class="text-red-500">${escapeHtml(message)}</div>
+        <span class="text-xs text-gray-400 block mt-2">Now</span>
+      `;
+      scrollToBottom();
+    }
+
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendUserMessage(message);
       userInput.value = '';
+      userInput.style.height = 'auto';
+
+      sendBtn.disabled = true;
+      const botBox = appendBotLoading();
+
+      try {
+        const response = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Failed to get AI response');
+        }
+
+        setBotResponse(
+          botBox,
+          result.text || 'No response generated.',
+          result.provider || 'unknown',
+          result.model || '-'
+        );
+      } catch (error) {
+        setBotError(botBox, error.message || 'Something went wrong');
+      } finally {
+        sendBtn.disabled = false;
+        userInput.focus();
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    userInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    userInput.addEventListener('input', () => {
+      userInput.style.height = 'auto';
+      userInput.style.height = Math.min(userInput.scrollHeight, 180) + 'px';
+    });
+
+    clearChatBtn.addEventListener('click', () => {
+      chatArea.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="bg-white p-3 rounded-lg shadow-sm max-w-2xl break-words">
+            Hello! How can I assist you today?
+            <span class="text-xs text-gray-400 block mt-1">Now</span>
+          </div>
+        </div>
+      `;
     });
   </script>
-
 </div>
